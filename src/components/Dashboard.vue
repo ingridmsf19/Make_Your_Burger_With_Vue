@@ -1,5 +1,6 @@
 <template>
   <div id="burger-table" v-if="burgers">
+    <MessageVue :msg="msg" v-show="msg"/>
     <div>
       <div id="burger-table-heading">
         <div class="order-id">#:</div>
@@ -38,13 +39,19 @@
 </template>
 
 <script>
+import MessageVue from './Message.vue';
+  
 export default {
   name: "DashboardVue",
+  components:{
+    MessageVue
+  },
   data() {
     return {
       burgers: null,
       burger_id: null,
       status: [],
+      msg: null
     };
   },
   methods: {
@@ -74,7 +81,11 @@ export default {
 
       const res = await req.json();
 
-      console.log(res)
+      // colocar uma mensagem de sistema
+      this.msg = `Pedido cancelado com sucesso!`;
+
+      // limpar msg
+      setTimeout(() => this.msg = '', 3000);
 
       this.getPedidos();
     },
@@ -90,6 +101,12 @@ export default {
       });
 
       const res = await req.json();
+
+      // colocar uma mensagem de sistema
+      this.msg = `O pedido nº ${res.id} foi atualizado para ${res.status}`;
+
+      // limpar msg
+      setTimeout(() => this.msg = '', 3000);
 
       console.log(res);
     },
